@@ -5,7 +5,7 @@ Users can practice mock interviews, submit answers, and receive an instant keywo
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 Controller → Service → Repository → MongoDB
@@ -17,7 +17,7 @@ Controller → Service → Repository → MongoDB
 
 ---
 
-## 🚀 How to Run
+## How to Run
 
 ### Prerequisites
 - **Node.js** v18+
@@ -49,7 +49,7 @@ Visit: **http://localhost:5173**
 
 ---
 
-## 🔑 Demo Credentials
+## Demo Credentials
 
 | Role  | Email                   | Password  |
 |-------|-------------------------|-----------|
@@ -58,7 +58,7 @@ Visit: **http://localhost:5173**
 
 ---
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### Auth
 | Method | Endpoint              | Access  | Description        |
@@ -93,7 +93,7 @@ Visit: **http://localhost:5173**
 
 ---
 
-## 🧪 Run Tests
+## Run Tests
 ```bash
 cd backend
 npm test
@@ -101,7 +101,7 @@ npm test
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 ```
 MockMate_AI/
 ├── backend/
