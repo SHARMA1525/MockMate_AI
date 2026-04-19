@@ -1,17 +1,3 @@
-/**
- * Auth Controller
- * 
- * Handles HTTP requests for authentication endpoints.
- * 
- * CONTROLLER RESPONSIBILITIES:
- * 1. Extract data from the request (req.body, req.params, etc.)
- * 2. Call the appropriate service method
- * 3. Send back the HTTP response
- * 
- * Controllers should NOT contain business logic.
- * They delegate everything to the service layer.
- */
-
 const { ResponseFactory } = require('../utils/factory');
 const { HTTP_STATUS } = require('../utils/constants');
 
@@ -20,17 +6,10 @@ class AuthController {
 
   constructor(authService) {
     this.#authService = authService;
-
-    // Bind methods to preserve 'this' context when used as route handlers
     this.register = this.register.bind(this);
     this.login = this.login.bind(this);
     this.getProfile = this.getProfile.bind(this);
   }
-
-  /**
-   * POST /api/auth/register
-   * Register a new user account
-   */
   async register(req, res, next) {
     try {
       const { username, email, password } = req.body;
@@ -41,14 +20,10 @@ class AuthController {
         ResponseFactory.success(result, 'Registration successful')
       );
     } catch (error) {
-      next(error);  // Pass to global error handler
+      next(error);
     }
   }
 
-  /**
-   * POST /api/auth/login
-   * Login with email and password, receive JWT token
-   */
   async login(req, res, next) {
     try {
       const { email, password } = req.body;
@@ -63,10 +38,6 @@ class AuthController {
     }
   }
 
-  /**
-   * GET /api/auth/me
-   * Get current user's profile (requires authentication)
-   */
   async getProfile(req, res, next) {
     try {
       const user = await this.#authService.getProfile(req.user.id);

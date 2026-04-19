@@ -1,16 +1,10 @@
-/**
- * Axios instance — base URL points to our Express backend.
- * JWT token is automatically attached to every request
- * via a request interceptor.
- */
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'http://localhost:5001/api',
   headers: { 'Content-Type': 'application/json' },
 });
 
-// Attach token to every request if it exists in localStorage
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -19,7 +13,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// If server returns 401, clear token and reload to login
 api.interceptors.response.use(
   (response) => response,
   (error) => {

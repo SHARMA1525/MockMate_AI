@@ -5,6 +5,7 @@ export const interviewService = {
   submitAnswer: (sessionId, questionId, userAnswer) =>
     api.post(`/interviews/${sessionId}/answer`, { questionId, userAnswer }),
   submit: (sessionId) => api.post(`/interviews/${sessionId}/submit`),
+  cancel: (sessionId) => api.post(`/interviews/${sessionId}/cancel`),
   getHistory: () => api.get('/interviews/history'),
   getReport: (sessionId) => api.get(`/interviews/${sessionId}/report`),
 };

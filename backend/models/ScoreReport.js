@@ -1,17 +1,5 @@
-/**
- * ScoreReport Model
- * 
- * Generated after an interview is submitted and scored.
- * Contains the overall score, per-question breakdown,
- * matched/missed keywords, and feedback text.
- * 
- * This is the "result card" the user sees after finishing
- * an interview session.
- */
-
 const mongoose = require('mongoose');
 
-// Sub-schema for individual question results
 const questionResultSchema = new mongoose.Schema({
   questionId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -45,7 +33,7 @@ const scoreReportSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'InterviewSession',
     required: [true, 'Session ID is required'],
-    unique: true,  // One report per session
+    unique: true, 
   },
   totalScore: {
     type: Number,
@@ -55,7 +43,6 @@ const scoreReportSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  // Detailed breakdown for each question
   questionResults: {
     type: [questionResultSchema],
     default: [],

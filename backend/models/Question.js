@@ -1,25 +1,12 @@
-/**
- * Question Model
- * 
- * Represents an interview question in the database.
- * Each question has a category, difficulty level, and two types of keywords:
- * 
- * - requiredKeywords: Must be present in a good answer (higher weight)
- * - bonusKeywords: Nice to have in an answer (lower weight)
- * 
- * The keywords are used by the Scoring Engine to evaluate user answers.
- */
-
 const mongoose = require('mongoose');
 const { CATEGORIES, DIFFICULTY } = require('../utils/constants');
 
-// Sub-schema for keywords with their weight values
 const keywordSchema = new mongoose.Schema({
   keyword: {
     type: String,
     required: true,
     trim: true,
-    lowercase: true,  // Store lowercase for easier matching
+    lowercase: true,
   },
   weight: {
     type: Number,
@@ -28,7 +15,7 @@ const keywordSchema = new mongoose.Schema({
     min: [1, 'Weight must be at least 1'],
     max: [5, 'Weight cannot exceed 5'],
   },
-}, { _id: false });  // No need for separate IDs on sub-documents
+}, { _id: false }); 
 
 const questionSchema = new mongoose.Schema({
   category: {
@@ -46,7 +33,6 @@ const questionSchema = new mongoose.Schema({
     enum: Object.values(DIFFICULTY),
     default: DIFFICULTY.MEDIUM,
   },
-  // Keywords that MUST be in a good answer
   requiredKeywords: {
     type: [keywordSchema],
     validate: {
@@ -56,7 +42,7 @@ const questionSchema = new mongoose.Schema({
       message: 'At least one required keyword is needed',
     },
   },
-  // Keywords that are nice-to-have bonus points
+
   bonusKeywords: {
     type: [keywordSchema],
     default: [],

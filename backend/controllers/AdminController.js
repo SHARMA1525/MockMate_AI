@@ -1,11 +1,3 @@
-/**
- * Admin Controller
- * 
- * Handles admin-only operations:
- * - View all users
- * - View aggregated interview analytics/reports
- */
-
 const { ResponseFactory } = require('../utils/factory');
 const { HTTP_STATUS } = require('../utils/constants');
 
@@ -19,15 +11,9 @@ class AdminController {
     this.#interviewRepository = interviewRepository;
     this.#scoreReportRepository = scoreReportRepository;
 
-    // Bind methods
     this.getAllUsers = this.getAllUsers.bind(this);
     this.getAnalytics = this.getAnalytics.bind(this);
   }
-
-  /**
-   * GET /api/admin/users
-   * Get all registered users
-   */
   async getAllUsers(req, res, next) {
     try {
       const users = await this.#userRepository.findAll();
@@ -40,23 +26,13 @@ class AdminController {
     }
   }
 
-  /**
-   * GET /api/admin/reports
-   * Get aggregated analytics:
-   * - Total users, total interviews, average score
-   * - Category-wise breakdown
-   */
   async getAnalytics(req, res, next) {
     try {
-      // Count totals
       const totalUsers = await this.#userRepository.count();
       const totalInterviews = await this.#interviewRepository.count();
       const completedInterviews = await this.#interviewRepository.count({ status: 'completed' });
 
-      // Get all score reports to calculate averages
       const allReports = await this.#scoreReportRepository.findAll();
-
-      // Calculate average score
       let averageScore = 0;
       if (allReports.length > 0) {
         const totalScore = allReports.reduce((sum, report) => sum + report.totalScore, 0);

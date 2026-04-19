@@ -1,14 +1,5 @@
-/**
- * Environment Configuration
- * 
- * Centralizes all environment variables in one place.
- * This way, if we ever need to change a variable name or default,
- * we only update it here — not scattered across the codebase.
- */
-
 const dotenv = require('dotenv');
 
-// Load environment variables from .env file
 dotenv.config();
 
 const config = {

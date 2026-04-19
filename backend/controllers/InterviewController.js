@@ -1,10 +1,3 @@
-/**
- * Interview Controller
- * 
- * Handles HTTP requests for the interview flow:
- * starting, answering questions, submitting, and viewing results.
- */
-
 const { ResponseFactory } = require('../utils/factory');
 const { HTTP_STATUS } = require('../utils/constants');
 
@@ -14,19 +7,13 @@ class InterviewController {
   constructor(interviewService) {
     this.#interviewService = interviewService;
 
-    // Bind methods to preserve 'this' context
     this.startInterview = this.startInterview.bind(this);
     this.submitAnswer = this.submitAnswer.bind(this);
     this.submitInterview = this.submitInterview.bind(this);
     this.getHistory = this.getHistory.bind(this);
     this.getReport = this.getReport.bind(this);
+    this.cancelInterview = this.cancelInterview.bind(this);
   }
-
-  /**
-   * POST /api/interviews/start
-   * Start a new interview session
-   * Body: { category: "JavaScript" }
-   */
   async startInterview(req, res, next) {
     try {
       const { category } = req.body;
@@ -41,12 +28,6 @@ class InterviewController {
       next(error);
     }
   }
-
-  /**
-   * POST /api/interviews/:sessionId/answer
-   * Submit an answer for a question
-   * Body: { questionId: "...", userAnswer: "..." }
-   */
   async submitAnswer(req, res, next) {
     try {
       const { sessionId } = req.params;
@@ -65,10 +46,6 @@ class InterviewController {
     }
   }
 
-  /**
-   * POST /api/interviews/:sessionId/submit
-   * Submit the interview for scoring
-   */
   async submitInterview(req, res, next) {
     try {
       const { sessionId } = req.params;
@@ -83,11 +60,6 @@ class InterviewController {
       next(error);
     }
   }
-
-  /**
-   * GET /api/interviews/history
-   * Get the authenticated user's interview history
-   */
   async getHistory(req, res, next) {
     try {
       const userId = req.user.id;
@@ -101,11 +73,6 @@ class InterviewController {
       next(error);
     }
   }
-
-  /**
-   * GET /api/interviews/:sessionId/report
-   * Get the detailed score report for a session
-   */
   async getReport(req, res, next) {
     try {
       const { sessionId } = req.params;
@@ -115,6 +82,21 @@ class InterviewController {
 
       res.status(HTTP_STATUS.OK).json(
         ResponseFactory.success(report, 'Score report fetched')
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async cancelInterview(req, res, next) {
+    try {
+      const { sessionId } = req.params;
+      const userId = req.user.id;
+
+      const result = await this.#interviewService.cancelInterview(sessionId, userId);
+
+      res.status(HTTP_STATUS.OK).json(
+        ResponseFactory.success(result, 'Interview cancelled successfully')
       );
     } catch (error) {
       next(error);

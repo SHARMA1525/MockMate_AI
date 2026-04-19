@@ -1,11 +1,3 @@
-/**
- * Answer Model
- * 
- * Stores a user's answer to a specific question within
- * an interview session. Each answer links back to both
- * the session and the question it responds to.
- */
-
 const mongoose = require('mongoose');
 
 const answerSchema = new mongoose.Schema({
