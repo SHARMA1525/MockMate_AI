@@ -63,7 +63,20 @@ async function startServer() {
   );
   const app = express();
 
-  app.use(cors({ origin: config.corsOrigin }));
+  const allowedOrigins = config.corsOrigin.split(',').map(o => o.trim());
+  app.use(cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) !== -1 || origin.includes('localhost')) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true
+  }));
+
   app.use(express.json()); 
 
   app.get('/api', (req, res) => {
