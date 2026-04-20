@@ -63,12 +63,14 @@ async function startServer() {
   );
   const app = express();
 
-  const allowedOrigins = config.corsOrigin.split(',').map(o => o.trim());
+  const allowedOrigins = config.corsOrigin.split(',').map(o => o.trim().replace(/\/$/, ''));
   app.use(cors({
     origin: (origin, callback) => {
       // Allow requests with no origin (like mobile apps or curl)
       if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1 || origin.includes('localhost')) {
+      
+      const normalizedOrigin = origin.replace(/\/$/, '');
+      if (allowedOrigins.includes(normalizedOrigin) || normalizedOrigin.includes('localhost')) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
